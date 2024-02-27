@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Comparison</title>
+</head>
+<body>
+
+    <form id="numberForm">
+        <label for="number1">Number 1:</label>
+        <input type="number" id="number1" name="number1" required><br>
+
+        <label for="number2">Number 2:</label>
+        <input type="number" id="number2" name="number2" required><br>
+
+        <label for="number3">Number 3:</label>
+        <input type="number" id="number3" name="number3" required><br>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        const API_URL = "https://u75xdda4ug.execute-api.us-east-2.amazonaws.com/prod";
+
+        function submitForm() {
+            const number1 = document.getElementById("number1").value;
+            const number2 = document.getElementById("number2").value;
+            const number3 = document.getElementById("number3").value;
+
+            const data = {
+                number1: parseFloat(number1),
+                number2: parseFloat(number2),
+                number3: parseFloat(number3)
+            };
+
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ data }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(result => {
+                const resultText = `Your average is: ${result.submittedAverage}`;
+                document.getElementById("result").innerText = resultText;
+
+                // You can further manipulate the DOM here if needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
